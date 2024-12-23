@@ -18,13 +18,11 @@ from ldm.modules.diffusionmodules.openaimodel import UNetModel, TimestepEmbedSeq
 from ldm.models.diffusion.ddpm import LatentDiffusion
 from ldm.util import log_txt_as_img, exists, instantiate_from_config
 from ldm.models.diffusion.ddim import DDIMSampler
-from deepspeed.ops.adam import FusedAdam, DeepSpeedCPUAdam
 
 
 
 class ControlledUnetModel(UNetModel):
     def forward(self, x, timesteps=None, context=None, control=None, only_mid_control=False, **kwargs):
-        print("controlledUnetModel forward")#
         hs = []
         with torch.no_grad():
             t_emb = timestep_embedding(timesteps, self.model_channels, repeat_only=False).to(dtype=x.dtype)#
@@ -286,7 +284,6 @@ class ControlNet(nn.Module):
         return TimestepEmbedSequential(zero_module(conv_nd(self.dims, channels, channels, 1, padding=0)))
 
     def forward(self, x, hint, timesteps, context, **kwargs):
-        print("ControlNet forward")
         t_emb = timestep_embedding(timesteps, self.model_channels, repeat_only=False).to(dtype=x.dtype)#
         emb = self.time_embed(t_emb)
 
@@ -324,7 +321,6 @@ class ControlLDM(LatentDiffusion):
 
     @torch.no_grad()
     def get_input(self, batch, k, bs=None, *args, **kwargs):
-        # print("ControlLDM get_input")
         x, c = super().get_input(batch, self.first_stage_key, *args, **kwargs)
         x = x.to(dtype=self.dtype())#
         control = batch[self.control_key]
