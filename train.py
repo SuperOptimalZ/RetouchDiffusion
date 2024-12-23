@@ -35,7 +35,7 @@ for s in state_dict:
         new_state_dict[s] = state_dict[s]
 model.load_state_dict(new_state_dict)
 
-ckpt = load_state_dict('./checkpoints/fivek10k.ckpt', location='cpu')
+ckpt = load_state_dict('./checkpoints/FiveK.ckpt', location='cpu')
 
 model.learning_rate = learning_rate
 model.sd_locked = sd_locked

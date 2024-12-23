@@ -209,16 +209,6 @@ class Sat_pre(nn.Module):
             *conv_block(32, 64, normalization=True)
         )
 
-        # self.fc1 = nn.Sequential(
-        #     nn.Linear(64, self.layers[0] * 2)
-        # )
-        #
-        # self.fc2 = nn.Sequential(
-        #     nn.Linear(64, self.layers[1] * 2),
-        # )
-        # self.fc3 = nn.Sequential(
-        #     nn.Linear(64, self.layers[2] * 2),
-        # )
         self.pre_fc = nn.Sequential(
             nn.Linear(64 * 8 * 8, 512),
             nn.PReLU(),
@@ -302,7 +292,7 @@ class L_spa(nn.Module):
 
     def __init__(self):
         super(L_spa, self).__init__()
-        # print(1)kernel = torch.FloatTensor(kernel).unsqueeze(0).unsqueeze(0)
+
         kernel_left = torch.FloatTensor([[0, 0, 0], [-1, 1, 0], [0, 0, 0]]).unsqueeze(0).unsqueeze(0)
         kernel_right = torch.FloatTensor([[0, 0, 0], [0, 1, -1], [0, 0, 0]]).unsqueeze(0).unsqueeze(0)
         kernel_up = torch.FloatTensor([[0, -1, 0], [0, 1, 0], [0, 0, 0]]).unsqueeze(0).unsqueeze(0)
@@ -347,7 +337,6 @@ class L_spa(nn.Module):
 
         return E
 
-# 光照模型
 class Global_model(nn.Module):
     def __init__(self):
         super(Global_model, self).__init__()
@@ -405,7 +394,6 @@ class Global_model(nn.Module):
 
         return -torch.log(1 - self.loss(std1, std2))
 
-# 颜色模型
 class Color_model(nn.Module):
     def __init__(self):
         super(Color_model, self).__init__()
@@ -415,10 +403,7 @@ class Color_model(nn.Module):
                    52, 52, 86]
         # self.cl = [86,86,86]
         self.sat_encoder = Sat_pre(3, sum(self.cl))
-        # self.loss = nn.MSELoss()
-        # self.rgb2hsv = RGB_HSV()
-        # self.h_bound = [0, 0.0611, 0.1389, 0.1889, 0.4278, 0.55, 0.6889, 0.8611, 1]
-
+        
     def interp(self, param, length):
         return F.interpolate(
             param.unsqueeze(1).unsqueeze(2), (1, length),
@@ -436,20 +421,15 @@ class Color_model(nn.Module):
 
         sat = self.sat_encoder(input, ref) * 0.1
         fl = sat.split(self.cl, dim=1)
-        # transform
+
         residual = torch.cat([
             self.curve(input[:, [0], ...], self.interp(fl[i * 3 + 0], self.cd), self.cd) + \
             self.curve(input[:, [1], ...], self.interp(fl[i * 3 + 1], self.cd), self.cd) + \
             self.curve(input[:, [2], ...], self.interp(fl[i * 3 + 2], self.cd), self.cd)
             for i in range(3)], dim=1)
-        # residual = torch.cat([
-        #     self.curve(input[:, [0], ...], self.interp(fl[ 0], self.cd), self.cd) + \
-        #     self.curve(input[:, [1], ...], self.interp(fl[ 1], self.cd), self.cd) + \
-        #     self.curve(input[:, [2], ...], self.interp(fl[ 2], self.cd), self.cd)
-        #     ], dim=1)
+       
         return (input + residual).clamp(0,1), sat
 
-# 整体模型
 class PE_Net(nn.Module):
     def __init__(self):
         super(PE_Net, self).__init__()
@@ -475,7 +455,6 @@ class PE_Net(nn.Module):
         param = torch.cat((param1, param2), dim=1)
 
         output = self.infer(input, param)
-        # output = torch.cat((g, img), dim=1)
 
         return output
 

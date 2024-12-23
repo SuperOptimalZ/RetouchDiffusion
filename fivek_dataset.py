@@ -67,7 +67,7 @@ class ImageDataset(Dataset):
         self.pairs = []
         for i in range(len(input_names)):
             input_img_name = os.path.join('input', input_names[i])
-            target_img_name = os.path.join('target', target_names[(i) % len(target_names)])  # 错位配对
+            target_img_name = os.path.join('target', random.choice(target_names)) 
             self.pairs.append((input_img_name, target_img_name))  
 
         if random_flip:
@@ -90,13 +90,10 @@ class ImageDataset(Dataset):
         return len(self.pairs)
 
     def process(self, idx):
-        # print("preprocess!!!")
         output = {}
-        # 获取输入和目标图像的路径
         input_name, target_name = self.pairs[idx]
         to_tensor = transforms.ToTensor()
 
-        # 加载输入和目标图像
         low_img = Image.open(os.path.join(self.dir, input_name)).convert('RGB')
         high_img = Image.open(os.path.join(self.dir, target_name)).convert('RGB')
         low_img_tensor = self.image_transform(low_img)  
@@ -107,11 +104,6 @@ class ImageDataset(Dataset):
 
         output["jpg"] = self.normalize(copy.deepcopy(low_img_tensor))
         output["hint"] = self.apply_noise(hint_img)
-        # output["hint"] = self.normalize(copy.deepcopy(low_img_tensor))
-        # output["jpg"] = self.apply_noise(hint_img)
-        # output["ref_jpg"] = self.normalize(copy.deepcopy(high_img))
-        # output["ref_hint"] = self.apply_noise(high_img)
-        # output["hint1"] = torch.cat([output["hint"], output["ref_hint"]], dim=0)
         output["txt"] = ""
         output["input_path"] = input_name
         output["ref_path"] = target_name
