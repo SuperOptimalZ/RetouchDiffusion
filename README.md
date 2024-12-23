@@ -1,6 +1,6 @@
 # RetouchDiffusion 
 
-This is the official PyTorch code for our paper Zero-Reference Low-Light Enhancement via Physical Quadruple Priors
+This is the official PyTorch code for our paper RetouchDiffusion: Unsupervised Personalized Image Retouching via Diffusion Models
 
 ![Framework](./assets/Framework.jpg)
 
