@@ -13,7 +13,7 @@ conda env create -f environment.yaml
 conda activate Retouch
 ```
 
-Download the checkpoints from [Baidu Netdisk](https://pan.baidu.com/s/1RmI4KgPcg9Ya-4KBKKAChw?pwd=q6hy) and replace the empty files as follows (required for both training and testing)
+Download the checkpoints 
 
 - `./savemodel/pe_net.pt`
 - `./checkpoints/Fivek.ckpt`
