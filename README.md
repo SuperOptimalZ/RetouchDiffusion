@@ -13,11 +13,11 @@ conda env create -f environment.yaml
 conda activate Retouch
 ```
 
-Download the checkpoints 
+Download the checkpoints from Anonymous Google drive 
 
-- `./savemodel/pe_net.pt`
-- `./checkpoints/Fivek.ckpt`
-- `./models/control_sd15_ini.ckpt`
+- `./savemodel/pe_net.pt` [link](https://drive.google.com/file/d/1YSNdR_nUxDFKZRMKz42UPpWYfG8C8qKp/view?usp=drive_link)
+- `./checkpoints/Fivek.ckpt` [link](https://drive.google.com/file/d/1WVz8WF4OE-qlsVJ-FHxtkgRwmuGrBGfc/view?usp=drive_link)
+- `./models/control_sd15_ini.ckpt` [link](https://drive.google.com/file/d/1XYbhNlWAJ3cRws2nNYHcCZJ8H8iEHUUc/view?usp=drive_link)
 
 #### 1. Test
 
