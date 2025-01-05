@@ -2,7 +2,7 @@
 
 This is the official PyTorch code for our paper RetouchDiffusion: Unsupervised Personalized Image Retouching via Diffusion Models
 
-![Framework](./assets/Framework.jpg)
+![Framework](./Framework.jpg)
 
 
 #### 0. Preparation
